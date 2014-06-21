@@ -166,6 +166,10 @@ var AppView = (function (_super) {
     AppView.prototype.setTodoDone = function (order, isDone, onlyChildren) {
         var _this = this;
         console.log("setTodoDone order=" + order + " isDone=" + isDone);
+        _.each(Todos.item(order), function (todo) {
+            return todo.setDoor(!isDone);
+        });
+
         if (!onlyChildren)
             _.each(Todos.item(order), function (todo) {
                 return todo.setStatus(isDone);
@@ -185,9 +189,6 @@ var AppView = (function (_super) {
         todo.toggleDoor();
         var order = todo.getOrder();
         var isDoorOpen = todo.isDoorOpen();
-        _.each(Todos.childrensOf(order), function (childTodo) {
-            return childTodo.setDoor(isDoorOpen);
-        }); //change status of children doors
         this.toggleTodoChildren(order, !isDoorOpen);
     };
 

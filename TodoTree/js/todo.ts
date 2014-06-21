@@ -76,10 +76,12 @@ class Todo extends Backbone.Model {
     }
 
     hide() {
+        console.log("TODO:" + this.get("order") + " done");
         this.save({ done: true });
     }
 
     show() {
+        console.log("TODO:" + this.get("order") + " not done");
         this.save({ done: false });
     }
 

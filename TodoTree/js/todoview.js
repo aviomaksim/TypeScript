@@ -34,6 +34,8 @@ var TodoView = (function (_super) {
     }
     // Re-render the contents of the todo item.
     TodoView.prototype.render = function () {
+        console.log("TODO view:" + this.model.getOrder() + " " + this.model.isDone());
+
         this.$el.html(this.template(this.model.toJSON()));
         this.model.isDone() ? this.$el.addClass("itemHide") : this.$el.removeClass("itemHide");
         var left = this.model.getLevel() * 10;

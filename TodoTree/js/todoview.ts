@@ -40,6 +40,9 @@ class TodoView extends Backbone.View {
 
     // Re-render the contents of the todo item.
     render() {
+
+        console.log("TODO view:" + this.model.getOrder() + " " + this.model.isDone());
+
         this.$el.html(this.template(this.model.toJSON()));
         this.model.isDone() ? this.$el.addClass("itemHide") : this.$el.removeClass("itemHide");
         var left : number = this.model.getLevel() * 10;

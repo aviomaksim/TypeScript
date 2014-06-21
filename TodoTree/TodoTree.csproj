@@ -30,8 +30,6 @@
     <Content Include="js\todos.ts" />
     <Content Include="js\todoview.js" />
     <Content Include="js\todoview.ts" />
-    <Content Include="test\qunit.d.ts" />
-    <Content Include="test\test.ts" />
     <Content Include="TodoTree.sln" />
     <Content Include="web.config" />
   </ItemGroup>

@@ -83,10 +83,12 @@ var Todo = (function (_super) {
     };
 
     Todo.prototype.hide = function () {
+        console.log("TODO:" + this.get("order") + " done");
         this.save({ done: true });
     };
 
     Todo.prototype.show = function () {
+        console.log("TODO:" + this.get("order") + " not done");
         this.save({ done: false });
     };
 

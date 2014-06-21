@@ -151,6 +151,8 @@ class AppView extends Backbone.View {
 
     setTodoDone(order, isDone: boolean, onlyChildren?: boolean) {
         console.log("setTodoDone order=" + order + " isDone=" + isDone);
+        _.each(Todos.item(order), todo => todo.setDoor(!isDone));
+
         if(!onlyChildren) _.each(Todos.item(order), todo => todo.setStatus(isDone));
         _.each(Todos.childrensOf(order), todo => this.setTodoDone(todo.getOrder(), isDone));
         return false;
@@ -165,7 +167,6 @@ class AppView extends Backbone.View {
         todo.toggleDoor();
         var order = todo.getOrder();
         var isDoorOpen = todo.isDoorOpen();
-        _.each(Todos.childrensOf(order), childTodo => childTodo.setDoor(isDoorOpen));//change status of children doors
         this.toggleTodoChildren(order, !isDoorOpen);
     }
 
