@@ -20,12 +20,10 @@ var AppView = (function (_super) {
         _super.call(this);
         // Delegated events for creating new items, and clearing completed ones.
         this.events = {
-            "click span.todo-add-child": "addChild",
-            "click span.todo-destroy": "removeTodo",
-            "click span.todo-bag": "toggleBag",
             "keypress #new-todo": "createOnEnter",
             "keyup #new-todo": "showTooltip",
-            "click .todo-clear a": "clearCompleted"
+            "click .todo-clear a": "clearCompleted",
+            "click span.todo-bag": "toggleBag"
         };
         this.tooltipTimeout = null;
 
@@ -60,44 +58,13 @@ var AppView = (function (_super) {
         }));
     };
 
-    AppView.prototype.addChild = function (e) {
-        var parentLevel = parseInt($(e.currentTarget).attr('value'));
-        var parentOrder = parseInt($(e.currentTarget).attr('order'));
-        Todos.create(this.newAttributes(parentLevel + 1, parentOrder));
-
-        _.each(Todos.item(parentOrder), function (todo) {
-            return todo.addChild();
-        });
-
-        this.toggleTodoChildren(parentOrder, false); //show all children
-    };
-
-    AppView.prototype.removeTodo = function (e) {
-        var _this = this;
-        var order = parseInt($(e.currentTarget).attr('order'));
-        _.each(Todos.item(order), function (todo) {
-            return _this.clearTodo(todo);
-        });
-        //this.removeTodoAndChildren(order);
-    };
-
-    AppView.prototype.toggleBag = function (e) {
-        var _this = this;
-        var order = parseInt($(e.currentTarget).attr('order'));
-        _.each(Todos.item(order), function (todo) {
-            return _this.changeDoorStatus(todo);
-        });
-    };
-
     // Add a single todo item to the list by creating a view for it, and
-    // appending its element to the `<ul>`.
     AppView.prototype.addOne = function (todo) {
-        var view = new TodoView({ model: todo });
         var parentOrder = todo.getParentOrder();
         if (parentOrder > 0) {
-            this.$("#todo-list #" + parentOrder).after(view.render().el);
+            todo.addOne(); //create child
         } else {
-            this.$("#todo-list").append(view.render().el);
+            var view = new TodoView({ model: todo });
         }
     };
 
@@ -110,12 +77,7 @@ var AppView = (function (_super) {
     AppView.prototype.newAttributes = function (level, parentOrder) {
         var order = Todos.nextOrder();
 
-        var content;
-        if (level >= 0 && order >= 0) {
-            content = "ID:" + order + ", level:" + level + ".";
-        } else {
-            content = this.input.val();
-        }
+        var content = this.input.val();
         return {
             content: content,
             order: order,
@@ -142,30 +104,8 @@ var AppView = (function (_super) {
         return false;
     };
 
-    // Clear all todo items, destroying their models.
-    AppView.prototype.removeTodoAndChildren = function (parentOrder) {
-        var _this = this;
-        _.each(Todos.childrensOf(parentOrder), function (todo) {
-            return _this.clearTodo(todo);
-        });
-        return false;
-    };
-
-    AppView.prototype.clearTodo = function (todo) {
-        var order = todo.getOrder();
-        this.removeTodoAndChildren(order);
-        todo.clear();
-
-        var parentOrder = todo.getParentOrder();
-        _.each(Todos.item(parentOrder), function (parentTodo) {
-            return parentTodo.removeChild();
-        });
-        return false;
-    };
-
     AppView.prototype.setTodoDone = function (order, isDone, onlyChildren) {
         var _this = this;
-        console.log("setTodoDone order=" + order + " isDone=" + isDone);
         _.each(Todos.item(order), function (todo) {
             return todo.setDoor(!isDone);
         });
@@ -190,6 +130,14 @@ var AppView = (function (_super) {
         var order = todo.getOrder();
         var isDoorOpen = todo.isDoorOpen();
         this.toggleTodoChildren(order, !isDoorOpen);
+    };
+
+    AppView.prototype.toggleBag = function (e) {
+        var _this = this;
+        var order = parseInt($(e.currentTarget).attr('order'));
+        _.each(Todos.item(order), function (todo) {
+            return _this.changeDoorStatus(todo);
+        });
     };
 
     // Lazily show the tooltip that tells you to press `enter` to save

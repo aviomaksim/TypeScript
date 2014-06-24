@@ -15,13 +15,12 @@ class AppView extends Backbone.View {
 
     // Delegated events for creating new items, and clearing completed ones.
     events = {
-        "click span.todo-add-child": "addChild",
-        "click span.todo-destroy": "removeTodo",
-        "click span.todo-bag": "toggleBag",
 
         "keypress #new-todo": "createOnEnter",
         "keyup #new-todo": "showTooltip",
         "click .todo-clear a": "clearCompleted",
+
+        "click span.todo-bag": "toggleBag"
     };
 
     input: JQuery;
@@ -61,37 +60,14 @@ class AppView extends Backbone.View {
         }));
     }
 
-    addChild(e) {
-        var parentLevel: number = parseInt($(e.currentTarget).attr('value'));
-        var parentOrder: number = parseInt($(e.currentTarget).attr('order'));
-        Todos.create(this.newAttributes(parentLevel + 1, parentOrder));
-
-        _.each(Todos.item(parentOrder), todo => todo.addChild());
-
-        this.toggleTodoChildren(parentOrder, false);//show all children
-    }
-
-    removeTodo(e) {
-        var order: number = parseInt($(e.currentTarget).attr('order'));
-        _.each(Todos.item(order), todo => this.clearTodo(todo));
-        //this.removeTodoAndChildren(order);
-    }
-
-
-    toggleBag(e) {
-        var order: number = parseInt($(e.currentTarget).attr('order'));
-        _.each(Todos.item(order), todo => this.changeDoorStatus(todo));
-    }
     
     // Add a single todo item to the list by creating a view for it, and
-    // appending its element to the `<ul>`.
     addOne(todo) {
-        var view = new TodoView({ model: todo });
         var parentOrder = todo.getParentOrder();
-        if (parentOrder>0) {
-            this.$("#todo-list #" + parentOrder).after(view.render().el);
-        } else {
-            this.$("#todo-list").append(view.render().el);
+        if (parentOrder > 0) {
+            todo.addOne();//create child
+        } else {//root element
+            var view = new TodoView({ model: todo });
         }
     }
 
@@ -104,12 +80,7 @@ class AppView extends Backbone.View {
     newAttributes(level?, parentOrder?) {
         var order = Todos.nextOrder();
 
-        var content : string;
-        if (level >= 0 && order >= 0) {
-            content = "ID:" + order + ", level:" + level + ".";
-        } else {
-            content = this.input.val();
-        }
+        var content : string = this.input.val();
         return {
             content: content,
             order: order,
@@ -132,25 +103,8 @@ class AppView extends Backbone.View {
         _.each(Todos.done(), todo => todo.clear());
         return false;
     }
-
-    // Clear all todo items, destroying their models.
-    removeTodoAndChildren(parentOrder) {
-        _.each(Todos.childrensOf(parentOrder), todo => this.clearTodo(todo));
-        return false;
-    }
-
-    clearTodo(todo) {
-        var order = todo.getOrder();
-        this.removeTodoAndChildren(order);
-        todo.clear();
-
-        var parentOrder = todo.getParentOrder();
-        _.each(Todos.item(parentOrder), parentTodo => parentTodo.removeChild());
-        return false;
-    }
-
+    
     setTodoDone(order, isDone: boolean, onlyChildren?: boolean) {
-        console.log("setTodoDone order=" + order + " isDone=" + isDone);
         _.each(Todos.item(order), todo => todo.setDoor(!isDone));
 
         if(!onlyChildren) _.each(Todos.item(order), todo => todo.setStatus(isDone));
@@ -170,6 +124,10 @@ class AppView extends Backbone.View {
         this.toggleTodoChildren(order, !isDoorOpen);
     }
 
+    toggleBag(e) {
+        var order: number = parseInt($(e.currentTarget).attr('order'));
+        _.each(Todos.item(order), todo => this.changeDoorStatus(todo));
+    }
     
     tooltipTimeout: number = null;
     // Lazily show the tooltip that tells you to press `enter` to save

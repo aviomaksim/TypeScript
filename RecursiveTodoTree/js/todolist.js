@@ -17,7 +17,7 @@ var TodoList = (function (_super) {
         // Reference to this collection's model.
         this.model = Todo;
         // Save all of the todo items under the `"todos"` namespace.
-        this.localStorage = new Store("todos-backbone");
+        this.localStorage = new Store("todos-backbone-recursive");
     }
     // Filter down the list of all todo items that are finished.
     TodoList.prototype.done = function () {

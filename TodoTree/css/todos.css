@@ -417,6 +417,7 @@ body {
 	border-bottom: 1px solid #cccccc;
 	*zoom: 1;
 	cursor: pointer;
+    background-color:rgba(50, 100, 50, 0.1)
 }
 #todoapp .content ul#todo-list li.itemHide {
     display: none;

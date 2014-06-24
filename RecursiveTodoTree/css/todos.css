@@ -89,14 +89,13 @@ body {
 #todo-list {
 	margin-top: 10px;
 }
-#todo-list li {
-	padding: 12px 20px 11px 0;
+#todo-list div.li {
 	position: relative;
 	font-size: 24px;
 	line-height: 1.1em;
 	border-bottom: 1px solid #cccccc;
 }
-#todo-list li:after {
+#todo-list div.li:after {
 	content: "\0020";
 	display: block;
 	height: 0;
@@ -104,7 +103,7 @@ body {
 	overflow: hidden;
 	visibility: hidden;
 }
-#todo-list li.editing {
+#todo-list div.li.editing {
 	padding: 0;
 	border-bottom: 0;
 }
@@ -150,16 +149,21 @@ body {
 #todo-list .todo-bag.close {
 	background: url(plus.png) no-repeat 0 0;
 }
+#todo-list .todo-edit {
+	background: url(edit.png) no-repeat 0 0;
+}
 #todo-list .todo-bag.hide {
     visibility: hidden;
 }
-#todo-list li:hover .todo-destroy,
-#todo-list li:hover .todo-add-child,
-#todo-list li:hover .todo-bag {
+#todo-list div.li:hover .todo-destroy,
+#todo-list div.li:hover .todo-add-child,
+#todo-list div.li:hover .todo-edit,
+#todo-list div.li:hover .todo-bag {
 	display: block;
 }
 #todo-list .todo-destroy:hover,
 #todo-list .todo-add-child:hover,
+#todo-list .todo-edit:hover,
 #todo-list .todo-bag:hover  {
 	background-position: 0 -20px;
 }
@@ -406,23 +410,24 @@ body {
 	margin-left: -85px;
 }
 /* line 55 */
-#todoapp .content ul#todo-list {
+#todoapp .content div#todo-list {
 	margin-top: 10px;
 }
 /* line 57 */
-#todoapp .content ul#todo-list li {
-	padding: 15px 20px 15px 0;
+#todoapp .content div#todo-list div.li {
+	padding: 15px 0 15px 0;
 	position: relative;
 	font-size: 24px;
 	border-bottom: 1px solid #cccccc;
 	*zoom: 1;
 	cursor: pointer;
+    background-color:rgba(50, 100, 50, 0.1)
 }
-#todoapp .content ul#todo-list li.itemHide {
+#todoapp .content div#todo-list div.li.itemHide {
     display: none;
 }
 /* line 22, /opt/ree/lib/ruby/gems/1.8/gems/compass-0.10.5/frameworks/compass/stylesheets/compass/utilities/general/_clearfix.scss */
-#todoapp .content ul#todo-list li:after {
+#todoapp .content div#todo-list div.li:after {
 	content: "\0020";
 	display: block;
 	height: 0;
@@ -431,12 +436,12 @@ body {
 	visibility: hidden;
 }
 /* line 64 */
-#todoapp .content ul#todo-list li.editing {
+#todoapp .content div#todo-list div.li.editing {
 	padding: 0;
 	border-bottom: 0;
 }
 /* line 67 */
-#todoapp .content ul#todo-list li.editing .todo-input {
+#todoapp .content div#todo-list div.li.editing .todo-input {
     display: block;
 	width: 466px;
 	font-size: 24px;
@@ -454,23 +459,21 @@ body {
 }
 
 /* line 79 */
-#todoapp .content ul#todo-list li.editing .todo-content {
+#todoapp .content div#todo-list div.li.editing .todo-content {
 	display: none;
 }
 /* line 83 */
-#todoapp .content ul#todo-list li.editing .todo-destroy,
-#todoapp .content ul#todo-list li.editing .todo-add-child,
-#todoapp .content ul#todo-list li.editing .todo-bag {
+#todoapp .content div#todo-list div.li.editing .todo-destroy,
+#todoapp .content div#todo-list div.li.editing .todo-add-child,
+#todoapp .content div#todo-list div.li.editing .todo-edit,
+#todoapp .content div#todo-list div.li.editing .todo-bag {
 	display: none !important;
 }
-/* line 85 */
-#todoapp .content ul#todo-list li .todo-input {
-	display: none;
-}
 /* line 96 */
-#todoapp .content ul#todo-list li .todo-destroy,
-#todoapp .content ul#todo-list li .todo-add-child,
-#todoapp .content ul#todo-list li .todo-bag {
+#todoapp .content div#todo-list div.li .todo-destroy,
+#todoapp .content div#todo-list div.li .todo-add-child,
+#todoapp .content div#todo-list div.li .todo-edit,
+#todoapp .content div#todo-list div.li .todo-bag {
 	position: absolute;
 	right: 0px;
 	top: 16px;
@@ -479,16 +482,20 @@ body {
 	width: 20px;
 	height: 20px;
 }
-#todoapp .content ul#todo-list li .todo-add-child {
+#todoapp .content div#todo-list div.li .todo-edit {
+    right: 50px;
+}
+#todoapp .content div#todo-list div.li .todo-add-child {
     right: 25px;
 }
-#todoapp .content ul#todo-list li .todo-bag {
+#todoapp .content div#todo-list div.li .todo-bag {
 	left: 0px;
 }
 /* line 106 */
-#todoapp .content ul#todo-list li:hover .todo-destroy,
-#todoapp .content ul#todo-list li:hover .todo-add-child,
-#todoapp .content ul#todo-list li:hover .todo-bag {
+#todoapp .content div#todo-list div.li:hover .todo-destroy,
+#todoapp .content div#todo-list div.li:hover .todo-add-child,
+#todoapp .content div#todo-list div.li:hover .todo-edit,
+#todoapp .content div#todo-list div.li:hover .todo-bag {
 	display: block;
 }
 /* line 109 */

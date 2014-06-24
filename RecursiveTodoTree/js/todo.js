@@ -1,4 +1,6 @@
+/// <reference path="jquery.d.ts"/>
 /// <reference path="backbone.d.ts"/>
+/// <reference path="todoview.ts"/>
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -22,7 +24,8 @@ var Todo = (function (_super) {
             parentOrder: 0,
             order: 0,
             isOpen: true,
-            childrenCount: 0
+            childrenCount: 0,
+            force: true
         };
     };
 
@@ -46,6 +49,10 @@ var Todo = (function (_super) {
         return this.get("done");
     };
 
+    Todo.prototype.getContent = function () {
+        return this.get("content");
+    };
+
     Todo.prototype.getLevel = function () {
         return this.get("level");
     };
@@ -58,6 +65,10 @@ var Todo = (function (_super) {
         return this.get("parentOrder");
     };
 
+    Todo.prototype.getChildrenCount = function () {
+        return this.get("childrenCount");
+    };
+
     Todo.prototype.isDoorOpen = function () {
         return this.get("isOpen");
     };
@@ -68,6 +79,15 @@ var Todo = (function (_super) {
 
     Todo.prototype.setDoor = function (isDoorOpen) {
         this.save({ isOpen: isDoorOpen });
+    };
+
+    Todo.prototype.forceUpdate = function () {
+        console.log('forceUpdate ' + this.getOrder());
+        this.save({ force: !this.get("force") });
+    };
+
+    Todo.prototype.addOne = function () {
+        var view = new TodoView({ model: this });
     };
 
     Todo.prototype.addChild = function () {

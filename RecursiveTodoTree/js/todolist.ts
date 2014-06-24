@@ -12,7 +12,7 @@ class TodoList extends Backbone.Collection<Todo> {
     model = Todo;
 
     // Save all of the todo items under the `"todos"` namespace.
-    localStorage = new Store("todos-backbone");
+    localStorage = new Store("todos-backbone-recursive");
 
     // Filter down the list of all todo items that are finished.
     done() {

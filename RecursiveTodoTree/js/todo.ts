@@ -1,4 +1,6 @@
+/// <reference path="jquery.d.ts"/>
 /// <reference path="backbone.d.ts"/>
+/// <reference path="todoview.ts"/>
 
 // Todo Model
 // ----------
@@ -15,7 +17,8 @@ class Todo extends Backbone.Model {
             parentOrder: 0,
             order: 0,
             isOpen: true,
-            childrenCount: 0
+            childrenCount: 0,
+            force: true
         }
     }
 
@@ -39,6 +42,10 @@ class Todo extends Backbone.Model {
         return this.get("done");
     }
 
+    getContent(): string {
+        return this.get("content");
+    }
+
     getLevel() : number {
         return this.get("level");
     }
@@ -51,6 +58,10 @@ class Todo extends Backbone.Model {
         return this.get("parentOrder");
     }
 
+    getChildrenCount() {
+        return this.get("childrenCount");
+    }
+
     isDoorOpen(): number {
         return this.get("isOpen");
     }
@@ -61,6 +72,15 @@ class Todo extends Backbone.Model {
 
     setDoor(isDoorOpen: boolean) {
         this.save({ isOpen: isDoorOpen });
+    }
+
+    forceUpdate() {
+        console.log('forceUpdate ' + this.getOrder());
+        this.save({ force: !this.get("force") });
+    }
+
+    addOne() {
+        var view = new TodoView({ model: this });
     }
 
     addChild() {

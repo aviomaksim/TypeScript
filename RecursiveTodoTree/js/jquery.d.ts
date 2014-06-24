@@ -26,6 +26,9 @@ interface JQuery {
     after(...content: any[]): JQuery;
     before(func: (index: any) => any): JQuery;
     before(...content: any[]): JQuery;
+    
+    length: number;
+    replaceWith(func: any): JQuery;
 }
 declare var $: {
     (el: HTMLElement): JQuery;

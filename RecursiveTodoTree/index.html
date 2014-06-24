@@ -2,7 +2,7 @@
 <html>
 
   <head>
-    <title>Backbone.js</title>
+    <title>The Forest</title>
     <link href="css/todos.css" media="all" rel="stylesheet" type="text/css"/>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
@@ -22,7 +22,7 @@
     <div id="todoapp">
 
       <div class="title">
-        <h1>The forest</h1>
+        <h1>The forest (recursive)</h1>
       </div>
 
       <div class="content">
@@ -33,7 +33,7 @@
         </div>
 
         <div id="todos">
-          <ul id="todo-list"></ul>
+          <div id="todo-list"></div>
         </div>
 
         <div id="todo-stats"></div>
@@ -43,12 +43,14 @@
     </div>
     
     <div id="instructions">
-      This is iterative tree of objects.<br />
+      This is recursive tree of objects.<br />
       Red button - creates child.<br />
       Grey button - removes object and children.<br />
       Blue button - shows/hides children.<br />
-      Double click on object - edit text.<br />
+      Yellow button - edit text.<br />
       The data is stored in local storage.<br />
+      <br />
+      Multibrowser support, but tested on Chrome v35 and IE11<br />
     </div>
   
     <div id="credits">
@@ -61,17 +63,19 @@
     <!-- Templates -->
 
     <script type="text/template" id="item-template">
-      <div class="todo <%= done ? 'done' : '' %>">
+      <div class="todo todo<%= order %> <%= done ? 'done' : '' %>">
         <div class="display">
-          <span class="todo-bag <%= !isOpen ? 'close' : '' %> <%= childrenCount > 0 ? '' : 'hide' %>" value="<%= level %>" order="<%= order %>"></span>
-          <label class="todo-content"><%= content %></label>
+          <span class="todo-bag todo-bag<%= order %> <%= !isOpen ? 'close' : '' %> <%= childrenCount > 0 ? '' : 'hide' %>" value="<%= level %>" order="<%= order %>"></span>
+          <label class="todo-content todo-content<%= order %>"><%= content %></label>
+          <span class="todo-edit" value="<%= level %>" order="<%= order %>"></span>
           <span class="todo-add-child" value="<%= level %>" order="<%= order %>"></span>
           <span class="todo-destroy" value="<%= level %>" order="<%= order %>"></span>
         </div>
         <div class="edit">
-          <input class="todo-input" type="text" value="<%= content %>" />
+          <input class="todo-input todo-input<%= order %>" type="text" value="<%= content %>" order="<%= order %>"/>
         </div>
       </div>
+      <div class="childrenof<%= order %> children"/>
     </script>
 
     <script type="text/template" id="stats-template">
