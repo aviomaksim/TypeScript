@@ -5,7 +5,7 @@ A tree of objects
 
 Task is to render a tree of objects.
 
-● Iterative solution
+● Iterative(TodoTree) and recursive(RecursiveTodoTree) solutions
 
 ● Code may be written in TypeScript
 
