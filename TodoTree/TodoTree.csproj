@@ -30,10 +30,16 @@
     <Content Include="js\todos.ts" />
     <Content Include="js\todoview.js" />
     <Content Include="js\todoview.ts" />
+    <Content Include="test.html" />
+    <Content Include="test\qunit.d.ts" />
+    <Content Include="test\test.d.ts" />
+    <Content Include="test\test.js" />
+    <Content Include="test\test.ts" />
     <Content Include="TodoTree.sln" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="chutzpah.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

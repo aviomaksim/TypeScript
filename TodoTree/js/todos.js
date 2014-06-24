@@ -11,6 +11,27 @@ var __extends = this.__extends || function (d, b) {
 // Create our global collection of **Todos**.
 var Todos = new TodoList();
 
+// Generate the attributes for a new Todo item.
+function newAttributes(text, level, parentOrder) {
+    var order = Todos.nextOrder();
+
+    var content;
+    if (level >= 0 && order >= 0) {
+        content = "ID:" + order + ", level:" + level + ".";
+    } else if (text) {
+        content = text;
+    } else {
+        content = "empty";
+    }
+    return {
+        content: content,
+        order: order,
+        parentOrder: parentOrder ? parentOrder : 0,
+        done: false,
+        level: level ? level : 0
+    };
+}
+
 // The Application
 // ---------------
 // Our overall **AppView** is the top-level piece of UI.
@@ -63,7 +84,7 @@ var AppView = (function (_super) {
     AppView.prototype.addChild = function (e) {
         var parentLevel = parseInt($(e.currentTarget).attr('value'));
         var parentOrder = parseInt($(e.currentTarget).attr('order'));
-        Todos.create(this.newAttributes(parentLevel + 1, parentOrder));
+        Todos.create(newAttributes(this.input.val(), parentLevel + 1, parentOrder));
 
         _.each(Todos.item(parentOrder), function (todo) {
             return todo.addChild();
@@ -106,31 +127,12 @@ var AppView = (function (_super) {
         Todos.each(this.addOne);
     };
 
-    // Generate the attributes for a new Todo item.
-    AppView.prototype.newAttributes = function (level, parentOrder) {
-        var order = Todos.nextOrder();
-
-        var content;
-        if (level >= 0 && order >= 0) {
-            content = "ID:" + order + ", level:" + level + ".";
-        } else {
-            content = this.input.val();
-        }
-        return {
-            content: content,
-            order: order,
-            parentOrder: parentOrder ? parentOrder : 0,
-            done: false,
-            level: level ? level : 0
-        };
-    };
-
     // If you hit return in the main input field, create new **Todo** model,
     // persisting it to *localStorage*.
     AppView.prototype.createOnEnter = function (e) {
         if (e.keyCode != 13)
             return;
-        Todos.create(this.newAttributes());
+        Todos.create(newAttributes(this.input.val()));
         this.input.val('');
     };
 

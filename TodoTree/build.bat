@@ -4,5 +4,4 @@ tsc js/todo.ts
 tsc js/todolist.ts
 tsc js/todoview.ts
 tsc js/todos.ts --module amd
-
 pause

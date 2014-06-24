@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title>The Forest</title>
+    <link href="css/todos.css" media="all" rel="stylesheet" type="text/css"/>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/json2/20110223/json2.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.1/underscore-min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/backbone-localstorage.js/1.0/backbone.localStorage-min.js"></script>
+    <script src="js/todo.js"></script>
+    <script src="js/todolist.js"></script>
+    <script src="js/todoview.js"></script>
+    <script src="js/todos.js"></script>
+    
+    <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.14.0.css">
+    <script src="http://code.jquery.com/qunit/qunit-1.14.0.js"></script>
+    <script>
+
+      //create root
+      Todos.create();//0
+      //create children
+      Todos.create(newAttributes("test", 1, 0));//1
+      Todos.create(newAttributes("test", 1, 0));//2
+      Todos.create(newAttributes("test", 2, 2));//3
+      Todos.create(newAttributes("test", 1, 0));//4
+
+      QUnit.test(name, function (assert) {
+        assert.equal(Todos.length, 5, "should be 5");
+      });
+
+    </script>
+  </head>
+
+  <body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture"></div>
+
+    <!-- Todo App Interface -->
+
+    <div id="todoapp">
+
+      <div class="title">
+        <h1>The Forest (iterative)</h1>
+      </div>
+
+      <div class="content">
+
+        <div id="create-todo">
+          <input id="new-todo" placeholder="Type name of new tree here!" type="text" />
+          <span class="ui-tooltip-top" style="display:none;">Press Enter to add tree</span>
+        </div>
+
+        <div id="todos">
+          <ul id="todo-list"></ul>
+        </div>
+
+        <div id="todo-stats"></div>
+
+      </div>
+
+    </div>
+    
+    <div id="instructions">
+      This is iterative tree of objects.<br />
+      Red button - creates child.<br />
+      Grey button - removes object and children.<br />
+      Blue button - shows/hides children.<br />
+      Double click on object - edit text.<br />
+      The data is stored in local storage.<br />
+      <br />
+      Multibrowser support, but tested on Chrome v35 and IE11<br />
+    </div>
+  
+    <div id="credits">
+      Created by
+      <br />
+      <a href="ee.linkedin.com/in/aviomaksim/">Maksim Kozorez</a>. 
+      <br />Used TypeScript version by <a href="http://blogs.msdn.com/lukeh">Luke Hoban</a>.
+    </div>
+
+    <!-- Templates -->
+
+    <script type="text/template" id="item-template">
+      <div class="todo <%= done ? 'done' : '' %>">
+        <div class="display">
+          <span class="todo-bag <%= !isOpen ? 'close' : '' %> <%= childrenCount > 0 ? '' : 'hide' %>" value="<%= level %>" order="<%= order %>"></span>
+          <label class="todo-content"><%= content %></label>
+          <span class="todo-add-child" value="<%= level %>" order="<%= order %>"></span>
+          <span class="todo-destroy" value="<%= level %>" order="<%= order %>"></span>
+        </div>
+        <div class="edit">
+          <input class="todo-input" type="text" value="<%= content %>" />
+        </div>
+      </div>
+    </script>
+
+    <script type="text/template" id="stats-template">
+      <% if (total) { %>
+        <span class="todo-count">
+          <span class="number"><%= done %></span>
+          <span class="word"><%= done == 1 ? 'item' : 'items' %> hidden</span>
+        </span>
+      <% } %>
+    </script>
+
+  </body>
+
+</html>
